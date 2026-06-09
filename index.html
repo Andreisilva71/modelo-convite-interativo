@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celebrando a Vida - Ana Luísa</title>
+  
+  <!-- Fontes Premium do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  
+  <!-- Estilos Pure CSS -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Comportamento Vanilla JS -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Canvas para efeito de confetes/pétalas elegantes -->
+  <canvas id="confetti"></canvas>
+
+  <main class="main-container">
+    <div class="invitation-wrapper">
+      
+      <!-- Hero: Full-bleed image com texto tipográfico flutuante -->
+      <section class="hero-image-container">
+        <img 
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2suYIn-3pp_qujcTBoprE7T6O-uQwBO_4HSk4JjdIwaq7pTpwlG37OH00Oc8iZYzbAHa-m3-ha9WaqPVxwiD-RXcMyTzq__UrEXxz1n_sE47ffcPtKPC0mop-D5K9Za2EPFBKrBcfcTv-gINvHAi0LYLk76LXCVG7_TlV8JhMdftm32Cv_7ypN7PSxtkY1bVbZt2WaXSUUO_PxrphiWBBYXeeBU37DUXQFJrhSWmPp-JiOec4P79uKb3YtYRwShKMoh6mebkGLmZ9" 
+          alt="Flores em tons pastel enquadrando o convite" 
+          class="hero-image" 
+        />
+        <!-- Gradiente scrim elegante de baixo para cima -->
+        <div class="hero-overlay"></div>
+        <!-- Conteúdo tipográfico sobre a imagem -->
+        <div class="hero-content">
+          <p class="hero-eyebrow">✦ &nbsp;Você está convidado(a)&nbsp; ✦</p>
+          <h1 class="hero-title">Ana Luísa</h1>
+          <div class="hero-divider-ornament">
+            <span></span><span class="hero-ornament-dot">◆</span><span></span>
+          </div>
+          <p class="hero-date">15 de Outubro &nbsp;•&nbsp; 19h</p>
+        </div>
+      </section>
+
+      <!-- Cartão de Detalhes -->
+      <article class="invitation-card reveal-on-scroll">
+        <!-- Cabeçalho do Cartão -->
+        <div class="card-header">
+          <span class="card-header-eyebrow font-label-sm">Aniversário</span>
+          <p class="card-header-message font-body-md">Chegou meu aniversário, uma data tão especial, e você é meu convidado.</p>
+        </div>
+
+        <!-- Informações do Evento em 3 colunas -->
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="material-symbols-outlined icon" aria-hidden="true">calendar_today</span>
+            <span class="font-label-sm label">DATA</span>
+            <span class="font-headline-md value">15 de Outubro</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="material-symbols-outlined icon" aria-hidden="true">schedule</span>
+            <span class="font-label-sm label">HORÁRIO</span>
+            <span class="font-headline-md value">19:00</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="material-symbols-outlined icon" aria-hidden="true">location_on</span>
+            <span class="font-label-sm label">LOCAL</span>
+            <span class="font-headline-md value">Espaço de Festa</span>
+            <span class="font-label-sm subvalue">Rua do Espaço, 123</span>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="button-container">
+          <!-- WhatsApp RSVP -->
+          <a href="#" id="btn-confirm-rsvp" class="btn btn-primary" aria-label="Confirmar presença via WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.859-4.42 9.863-9.864.002-2.637-1.03-5.114-2.905-6.989-1.874-1.873-4.364-2.903-7.001-2.904-5.438 0-9.863 4.42-9.867 9.865-.001 1.765.461 3.488 1.336 5.01L1.2 21.8l4.447-1.166-.002-.001zm11.536-7.85c-.301-.15-1.78-.879-2.056-.979-.275-.101-.476-.15-.676.15-.2.3-.778.979-.953 1.179-.176.2-.351.224-.652.075-.301-.15-1.27-.468-2.42-1.494-.894-.798-1.5-1.783-1.675-2.083-.176-.3-.019-.462.13-.611.135-.134.302-.35.453-.525.15-.175.2-.3.301-.5.101-.2.05-.375-.025-.525-.075-.15-.676-1.628-.926-2.228-.244-.587-.492-.507-.676-.516-.175-.008-.375-.01-.575-.01-.2 0-.525.075-.8.375-.276.3-1.052 1.028-1.052 2.51 0 1.481 1.077 2.912 1.227 3.112.15.2 2.12 3.238 5.136 4.537.717.309 1.278.494 1.716.633.721.23 1.377.198 1.896.121.578-.088 1.78-.728 2.03-1.43.25-.701.25-1.3.175-1.43-.075-.13-.275-.205-.576-.355z"/>
+            </svg>
+            Confirmar Presença
+          </a>
+
+          <!-- Localização Maps -->
+          <a href="#" id="btn-view-location" class="btn btn-secondary" aria-label="Abrir localização no Google Maps">
+            <span class="material-symbols-outlined icon" aria-hidden="true">map</span>
+            Ver Localização
+          </a>
+        </div>
+
+        <!-- Botão Modal Presentes -->
+        <button id="btn-open-gifts" class="btn btn-tertiary" aria-label="Ver sugestões de presentes">
+          <span class="material-symbols-outlined icon" aria-hidden="true">card_giftcard</span>
+          Sugestões de Presentes
+        </button>
+      </article>
+
+
+      <!-- Detalhes do Local (Compacto) -->
+      <section class="location-details reveal-on-scroll">
+        <h2 class="font-headline-lg">O Local</h2>
+        <p class="font-body-md">
+          Escolhi o Espaço pela sua atmosfera acolhedora e elegante. Um lugar cercado de natureza, perfeito para celebrarmos.
+        </p>
+        
+        <div class="features-list">
+          <div class="feature-item">
+            <span class="material-symbols-outlined icon" aria-hidden="true">local_parking</span>
+            <span>Estacionamento gratuito no local para convidados.</span>
+          </div>
+          
+          <div class="feature-item">
+            <span class="material-symbols-outlined icon" aria-hidden="true">child_friendly</span>
+            <span>Espaço kids com monitores especializados.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rodapé -->
+      <footer class="footer-section reveal-on-scroll">
+        <h2 class="font-headline-md footer-title">Espero você para comemorarmos juntos!</h2>
+        
+        <div class="footer-icons">
+          <span class="material-symbols-outlined icon" aria-hidden="true">favorite</span>
+          <span class="material-symbols-outlined icon" aria-hidden="true">celebration</span>
+          <span class="material-symbols-outlined icon" aria-hidden="true">cake</span>
+        </div>
+        
+        <p class="font-label-sm footer-copyright">© 2026 Andrei Silva Dev</p>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Modal de Sugestões de Presentes -->
+  <div id="gifts-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="gifts-modal-title">
+    <div class="modal-content" role="document">
+      <div class="modal-header">
+        <h3 class="font-headline-md" id="gifts-modal-title">Sugestões de Presentes</h3>
+        <button id="btn-close-modal" class="btn-close" aria-label="Fechar modal">
+          <span class="material-symbols-outlined icon" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <!-- Lista de Presentes Substituída conforme requisitos -->
+      <div class="gift-list">
+        <!-- Item 1 -->
+        <div class="gift-item">
+          <span class="material-symbols-outlined icon" aria-hidden="true">book</span>
+          <div class="gift-details">
+            <p class="gift-name">Item 1</p>
+            <p class="gift-store">Livro de Coleção Clássica</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="gift-item">
+          <span class="material-symbols-outlined icon" aria-hidden="true">coffee</span>
+          <div class="gift-details">
+            <p class="gift-name">Item 2</p>
+            <p class="gift-store">Máquina de Café Espresso</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="gift-item">
+          <span class="material-symbols-outlined icon" aria-hidden="true">wine_bar</span>
+          <div class="gift-details">
+            <p class="gift-name">Item 3</p>
+            <p class="gift-store">Conjunto de Taças de Cristal</p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="gift-item">
+          <span class="material-symbols-outlined icon" aria-hidden="true">spa</span>
+          <div class="gift-details">
+            <p class="gift-name">Item 4</p>
+            <p class="gift-store">Vale-presente Spa Day</p>
+          </div>
+        </div>
+
+        <!-- Item 5 (PIX com Cópia Chave) -->
+        <div class="gift-item">
+          <span class="material-symbols-outlined icon" aria-hidden="true">payments</span>
+          <div class="gift-details">
+            <p class="gift-name">Item 5</p>
+            <p class="gift-store">Contribuição via PIX</p>
+          </div>
+          <button id="btn-copy-pix" class="btn-copy" aria-label="Copiar chave PIX">
+            <span class="material-symbols-outlined icon" aria-hidden="true">content_copy</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Toast para feedback visual do PIX -->
+      <div id="pix-toast" class="pix-toast" role="alert">Chave PIX copiada!</div>
+
+      <p class="font-label-sm modal-footer-note">
+        Sua presença é o maior presente! Mas caso deseje contribuir, aqui estão algumas sugestões.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
