@@ -1,28 +1,68 @@
 /* script.js - Lógica Interativa do Convite */
 
 // 1. CONFIGURAÇÃO DO CONVITE
-// Altere estas variáveis para personalizar o convite com suas informações
 const CONFIG = {
-  // WhatsApp para RSVP (Apenas números, incluindo código do país e DDD)
   whatsappNumber: '5500000000000',
-  // Mensagem automática enviada ao clicar em Confirmar Presença
   whatsappMessage: 'Olá! Estou confirmando minha presença no aniversário de Ana Luísa.',
-  // Link para a localização (Google Maps ou Waze)
   googleMapsUrl: 'https://maps.app.goo.gl/Hu7PBUov5WkNzxAi8', 
-  // Chave PIX para sugestão de presentes
   pixKey: '12.345.678/0001-90'
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Inicializa a configuração dos botões
-  initActionButtons();
-  // Inicializa o controle do modal
-  initModal();
-  // Inicializa a animação de confete/pétalas
-  initConfetti();
-  // Inicializa a revelação suave de elementos ao rolar a página
-  initScrollAnimations();
-});
+let toggleConfettiPause = null;
+
+// Função utilitária resiliente de cópia para clipboard (com fallback para Webviews e HTTP)
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  } else {
+    return new Promise((resolve, reject) => {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.padding = '0';
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        textArea.style.background = 'transparent';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if (successful) {
+          resolve();
+        } else {
+          reject(new Error('Falha ao copiar via execCommand'));
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+}
+
+// 1. INICIALIZAÇÃO DOS COMPONENTES (Executado imediatamente no rodapé do body)
+initActionButtons();
+initModal();
+initConfetti();
+initScrollAnimations();
+
+// Controle da tela de carregamento (Preloader)
+window.addEventListener('load', hidePreloader);
+setTimeout(hidePreloader, 3000); // Segurança: remove após 3s em caso de falha de conexão
+
+function hidePreloader() {
+  const preloader = document.getElementById('preloader');
+  if (preloader && !preloader.classList.contains('fade-out')) {
+    preloader.classList.add('fade-out');
+  }
+}
+
 
 // 2. CONFIGURAÇÃO DOS LINKS DE AÇÃO
 function initActionButtons() {
@@ -30,19 +70,16 @@ function initActionButtons() {
   const btnLocation = document.getElementById('btn-view-location');
 
   if (btnConfirm) {
-    btnConfirm.addEventListener('click', (e) => {
-      e.preventDefault();
-      const encodedMsg = encodeURIComponent(CONFIG.whatsappMessage);
-      const url = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMsg}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    });
+    const encodedMsg = encodeURIComponent(CONFIG.whatsappMessage);
+    btnConfirm.href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMsg}`;
+    btnConfirm.target = '_blank';
+    btnConfirm.rel = 'noopener noreferrer';
   }
 
   if (btnLocation) {
-    btnLocation.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.open(CONFIG.googleMapsUrl, '_blank', 'noopener,noreferrer');
-    });
+    btnLocation.href = CONFIG.googleMapsUrl;
+    btnLocation.target = '_blank';
+    btnLocation.rel = 'noopener noreferrer';
   }
 }
 
@@ -60,12 +97,14 @@ function initModal() {
   const openModal = () => {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (toggleConfettiPause) toggleConfettiPause(true); // Pausa a queda de confetes para poupar bateria
   };
 
   // Função para fechar o modal
   const closeModal = () => {
     modal.classList.remove('active');
     document.body.style.overflow = 'auto';
+    if (toggleConfettiPause) toggleConfettiPause(false); // Retoma os confetes
   };
 
   if (btnOpen) btnOpen.addEventListener('click', openModal);
@@ -85,10 +124,10 @@ function initModal() {
     }
   });
 
-  // Copiar chave PIX para a área de transferência
+  // Copiar chave PIX para a área de transferência com suporte resiliente
   if (btnCopyPix) {
     btnCopyPix.addEventListener('click', () => {
-      navigator.clipboard.writeText(CONFIG.pixKey).then(() => {
+      copyToClipboard(CONFIG.pixKey).then(() => {
         // Mostra o toast animado
         if (pixToast) {
           pixToast.classList.add('show');
@@ -109,8 +148,19 @@ function initConfetti() {
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
+  if (!ctx) return; // Aborta graciosamente caso o contexto 2D não esteja disponível
+
   let particles = [];
-  
+  let isConfettiPaused = false;
+
+  // Controlador global de pausa para ser acessado de fora do escopo
+  toggleConfettiPause = (paused) => {
+    isConfettiPaused = paused;
+    if (paused) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas ao pausar
+    }
+  };
+
   // Paleta de cores baseada em tons suaves de azul e branco
   const colors = ['#041632', '#43617d', '#b7c7eb', '#ffffff', '#cee5ff'];
 
@@ -169,16 +219,22 @@ function initConfetti() {
   }
 
   function loop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
+    if (!isConfettiPaused) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+    }
     requestAnimationFrame(loop);
   }
 
+  let lastWidth = window.innerWidth;
   window.addEventListener('resize', () => {
-    resizeCanvas();
+    if (window.innerWidth !== lastWidth) {
+      lastWidth = window.innerWidth;
+      resizeCanvas();
+    }
   });
 
   setup();

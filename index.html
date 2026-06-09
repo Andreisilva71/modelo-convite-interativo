@@ -13,13 +13,21 @@
   
   <!-- Estilos Pure CSS -->
   <link rel="stylesheet" href="style.css" />
-  
-  <!-- Comportamento Vanilla JS -->
-  <script src="script.js" defer></script>
 </head>
 <body>
+  <!-- Preloader Premium -->
+  <div id="preloader" class="preloader" role="status" aria-live="polite" aria-label="Carregando convite">
+    <div class="preloader-content">
+      <h2 class="preloader-title">Ana Luísa</h2>
+      <div class="preloader-ornament">
+        <span></span><span class="preloader-dot">◆</span><span></span>
+      </div>
+      <p class="preloader-subtitle">Preparando convite...</p>
+    </div>
+  </div>
+
   <!-- Canvas para efeito de confetes/pétalas elegantes -->
-  <canvas id="confetti"></canvas>
+  <canvas id="confetti" aria-hidden="true"></canvas>
 
   <main class="main-container">
     <div class="invitation-wrapper">
@@ -27,9 +35,11 @@
       <!-- Hero: Full-bleed image com texto tipográfico flutuante -->
       <section class="hero-image-container">
         <img 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2suYIn-3pp_qujcTBoprE7T6O-uQwBO_4HSk4JjdIwaq7pTpwlG37OH00Oc8iZYzbAHa-m3-ha9WaqPVxwiD-RXcMyTzq__UrEXxz1n_sE47ffcPtKPC0mop-D5K9Za2EPFBKrBcfcTv-gINvHAi0LYLk76LXCVG7_TlV8JhMdftm32Cv_7ypN7PSxtkY1bVbZt2WaXSUUO_PxrphiWBBYXeeBU37DUXQFJrhSWmPp-JiOec4P79uKb3YtYRwShKMoh6mebkGLmZ9" 
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2suYIn-3pp_qujcTBoprE7T6O-uQwBO_4HSk4JjdIwaq7pTpwlG37OH00Oc8iZYzbAHa-m3-ha9WaqPVxwiD-RXcMyTzq__UrEXxz1n_sE47ffcPtKPC0mop-D5K9Za2EPFBKrBcfcTv-gINvHAi0LYLk76LXCVG7_TlV8JhMdftm32Cv_7ypN7PSxtkY1bVbZt2WaXSUUO_PxrphiWBBYXeeBU37DUXQFJrhSWmPp-JiOec4P79uKb3YtYRwShKMoh6mebkGLmZ9=w800" 
           alt="Flores em tons pastel enquadrando o convite" 
           class="hero-image" 
+          loading="eager"
+          decoding="async"
         />
         <!-- Gradiente scrim elegante de baixo para cima -->
         <div class="hero-overlay"></div>
@@ -45,7 +55,7 @@
       </section>
 
       <!-- Cartão de Detalhes -->
-      <article class="invitation-card reveal-on-scroll">
+      <article class="invitation-card">
         <!-- Cabeçalho do Cartão -->
         <div class="card-header">
           <span class="card-header-eyebrow font-label-sm">Aniversário</span>
@@ -204,5 +214,8 @@
       </p>
     </div>
   </div>
+
+  <!-- Comportamento Vanilla JS no rodapé para execução imediata do DOM -->
+  <script src="script.js"></script>
 </body>
 </html>
