@@ -46,11 +46,14 @@ function copyToClipboard(text) {
   }
 }
 
+// Trava o scroll da página no carregamento inicial para a abertura do envelope
+document.body.classList.add('lock-scroll');
+
 // 1. INICIALIZAÇÃO DOS COMPONENTES (Executado imediatamente no rodapé do body)
 initActionButtons();
 initModal();
 initConfetti();
-initScrollAnimations();
+initEnvelope();
 
 // Controle da tela de carregamento (Preloader)
 window.addEventListener('load', hidePreloader);
@@ -61,6 +64,35 @@ function hidePreloader() {
   if (preloader && !preloader.classList.contains('fade-out')) {
     preloader.classList.add('fade-out');
   }
+}
+
+// 1.5 CONTROLE DO ENVELOPE DE ABERTURA (SPLASH SCREEN)
+function initEnvelope() {
+  const overlay = document.getElementById('envelope-overlay');
+  const btnOpen = document.getElementById('btn-open-envelope');
+  const mainContainer = document.querySelector('.main-container');
+
+  if (!overlay || !btnOpen) return;
+
+  btnOpen.addEventListener('click', () => {
+    // 1. Dispara o fade-out do envelope
+    overlay.classList.add('fade-out');
+
+    // 2. Revela o conteúdo principal com efeito de aproximação
+    if (mainContainer) {
+      mainContainer.classList.add('visible');
+    }
+
+    // 3. Libera o scroll da página
+    document.body.classList.remove('lock-scroll');
+
+    // 4. Inicia a chuva de pétalas de confete quase que imediatamente
+    setTimeout(() => {
+      if (toggleConfettiPause) {
+        toggleConfettiPause(false);
+      }
+    }, 100);
+  });
 }
 
 
@@ -151,7 +183,7 @@ function initConfetti() {
   if (!ctx) return; // Aborta graciosamente caso o contexto 2D não esteja disponível
 
   let particles = [];
-  let isConfettiPaused = false;
+  let isConfettiPaused = true; // Inicia pausado para não renderizar por baixo do envelope fechado
 
   // Controlador global de pausa para ser acessado de fora do escopo
   toggleConfettiPause = (paused) => {
@@ -241,24 +273,4 @@ function initConfetti() {
   loop();
 }
 
-// 5. ANIMAÇÕES DE REVELAÇÃO NO SCROLL (INTERSECTION OBSERVER)
-function initScrollAnimations() {
-  const observerOptions = {
-    threshold: 0.15,
-    rootMargin: '0px 0px -40px 0px'
-  };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target); // Executa apenas uma vez
-      }
-    });
-  }, observerOptions);
-
-  const elementsToReveal = document.querySelectorAll('.reveal-on-scroll');
-  elementsToReveal.forEach(el => {
-    observer.observe(el);
-  });
-}
